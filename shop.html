@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Shop premium gaming gear at Gaming Castel. Keyboards, mice, headsets, monitors, and more.">
+  <title>Shop - Gaming Castel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0,1" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: '#6c5ce7', dark: '#5a4bd1', light: '#a29bfe' },
+            accent: { DEFAULT: '#00d4ff', dark: '#00b8e6' },
+            dark: { DEFAULT: '#0a0a0f', secondary: '#12121a', card: '#1a1a2e' }
+          },
+          fontFamily: { outfit: ['Outfit', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    .search-container { position: relative; }
+    .search-results { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); width: 400px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); z-index: 100; opacity: 0; visibility: hidden; transition: var(--transition); margin-top: 10px; max-height: 400px; overflow-y: auto; }
+    .search-results.active { opacity: 1; visibility: visible; }
+    .search-result-item { display: flex; align-items: center; gap: 12px; padding: 12px 15px; transition: var(--transition); }
+    .search-result-item:hover { background: var(--bg-hover); }
+    .search-result-item img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; background: var(--bg-elevated); }
+    .search-result-item strong { display: block; font-size: 0.9rem; margin-bottom: 4px; color: var(--text-primary); }
+    .search-result-item span { color: var(--primary-light); font-weight: 600; font-size: 0.85rem; }
+    .search-no-results { padding: 20px; text-align: center; color: var(--text-muted); }
+    #quick-view-modal { position: fixed; inset: 0; z-index: 9999; display: none; }
+    #quick-view-modal.active { display: block; }
+    #quick-view-modal .modal-overlay { display: flex; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 20px; }
+    .modal-overlay.active { display: flex; }
+    .modal-content { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 40px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; }
+    .modal-close { position: absolute; top: 15px; right: 15px; width: 40px; height: 40px; border-radius: 50%; background: var(--bg-hover); display: flex; align-items: center; justify-content: center; color: var(--text-primary); transition: var(--transition); }
+    .modal-close:hover { background: var(--secondary); }
+  </style>
+</head>
+<body>
+
+<div id="toast-container" class="toast-container"></div>
+<div id="quick-view-modal"></div>
+<button class="back-to-top material-symbols-outlined">arrow_upward</button>
+<div class="mobile-menu-overlay"></div>
+<div class="mobile-menu">
+  <div class="mobile-menu-header">
+    <div class="logo" style="font-size:1.3rem;font-weight:800">Gaming <span style="background:linear-gradient(135deg,#6c5ce7,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Castel</span></div>
+    <button class="mobile-menu-close"><span class="material-symbols-outlined">close</span></button>
+  </div>
+  <div class="mobile-menu-links">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="categories.html">Categories</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div style="margin-top:30px;padding-top:20px;border-top:1px solid var(--border-color);display:flex;gap:15px">
+    <a href="wishlist.html" style="color:var(--text-secondary)"><span class="material-symbols-outlined">favorite</span></a>
+    <a href="cart.html" style="color:var(--text-secondary)"><span class="material-symbols-outlined">shopping_cart</span></a>
+    <a href="#" style="color:var(--text-secondary)"><span class="material-symbols-outlined">person</span></a>
+  </div>
+</div>
+
+<div class="announcement-bar">
+  <div class="container">
+    <div class="offer">
+      <span class="material-symbols-outlined">local_shipping</span>
+      <span>Free shipping on orders over 999 DH</span>
+    </div>
+    <div class="offer">
+      <span class="material-symbols-outlined">flash_on</span>
+      <span>Summer Sale - Up to 40% Off</span>
+    </div>
+    <div class="phone">
+      <span class="material-symbols-outlined">call</span>
+      <span>+212 5XX XX XX XX</span>
+    </div>
+  </div>
+</div>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="logo">Gaming <span>Castel</span></a>
+    <ul class="nav-links">
+      <li style="position:relative">
+        <a href="shop.html" class="active">Shop <span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">expand_more</span></a>
+        <div class="mega-menu">
+          <div class="container">
+            <div class="mega-menu-grid">
+              <div class="mega-menu-column">
+                <h4>Input Devices</h4>
+                <a href="shop.html?category=Mice"><span class="material-symbols-outlined">mouse</span> Gaming Mice</a>
+                <a href="shop.html?category=Keyboards"><span class="material-symbols-outlined">keyboard</span> Keyboards</a>
+                <a href="shop.html?category=Controllers"><span class="material-symbols-outlined">stadia_controller</span> Controllers</a>
+                <a href="shop.html?category=Mouse Pads"><span class="material-symbols-outlined">grid_view</span> Mouse Pads</a>
+              </div>
+              <div class="mega-menu-column">
+                <h4>Audio & Video</h4>
+                <a href="shop.html?category=Headsets"><span class="material-symbols-outlined">headphones</span> Headsets</a>
+                <a href="shop.html?category=Microphones"><span class="material-symbols-outlined">mic</span> Microphones</a>
+                <a href="shop.html?category=Webcams"><span class="material-symbols-outlined">videocam</span> Webcams</a>
+                <a href="shop.html?category=Monitors"><span class="material-symbols-outlined">monitor</span> Monitors</a>
+              </div>
+              <div class="mega-menu-column">
+                <h4>Setup & Furniture</h4>
+                <a href="shop.html?category=Chairs"><span class="material-symbols-outlined">chair</span> Gaming Chairs</a>
+                <a href="shop.html?category=Accessories"><span class="material-symbols-outlined">table</span> Gaming Desks</a>
+                <a href="shop.html?category=Accessories"><span class="material-symbols-outlined">light</span> RGB Lighting</a>
+                <a href="shop.html?category=PC Components"><span class="material-symbols-outlined">settings</span> PC Components</a>
+              </div>
+              <div class="mega-menu-column">
+                <h4>Brands</h4>
+                <a href="shop.html?brand=Logitech">Logitech G</a>
+                <a href="shop.html?brand=Razer">Razer</a>
+                <a href="shop.html?brand=Corsair">Corsair</a>
+                <a href="shop.html?brand=SteelSeries">SteelSeries</a>
+                <a href="shop.html?brand=HyperX">HyperX</a>
+                <a href="shop.html?brand=ASUS">ASUS ROG</a>
+                <a href="shop.html?brand=MSI">MSI</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li><a href="categories.html">Categories</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="search-container">
+        <a href="#" onclick="event.preventDefault();document.getElementById('search-input').focus()">
+          <span class="material-symbols-outlined">search</span>
+        </a>
+        <div class="search-results" id="search-results"></div>
+      </div>
+      <a href="wishlist.html">
+        <span class="material-symbols-outlined">favorite</span>
+        <span class="wishlist-count">0</span>
+      </a>
+      <a href="cart.html">
+        <span class="material-symbols-outlined">shopping_cart</span>
+        <span class="cart-count">0</span>
+      </a>
+      <a href="#"><span class="material-symbols-outlined">person</span></a>
+      <button class="mobile-menu-btn"><span class="material-symbols-outlined">menu</span></button>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section style="padding:40px 0;background:var(--bg-secondary);border-bottom:1px solid var(--border-color)">
+    <div class="container">
+      <div class="breadcrumbs">
+        <a href="index.html">Home</a>
+        <span class="material-symbols-outlined" style="font-size:14px">chevron_right</span>
+        <span>Shop</span>
+      </div>
+      <h1 style="font-size:2.5rem;font-weight:800">Shop All Products</h1>
+      <p style="color:var(--text-secondary);margin-top:8px">Browse our complete collection of premium gaming gear</p>
+    </div>
+  </section>
+
+  <section class="section-padding">
+    <div class="container">
+      <div class="shop-layout">
+        <aside class="shop-sidebar">
+          <div class="sidebar-widget sidebar-search">
+            <h3>Search</h3>
+            <input type="text" id="shop-search" placeholder="Search products..." autocomplete="off">
+          </div>
+
+          <div class="sidebar-widget sidebar-categories">
+            <h3>Categories</h3>
+            <label><input type="checkbox" class="category-filter" value="PC Components"> PC Components <span class="count">(12)</span></label>
+            <label><input type="checkbox" class="category-filter" value="Mice"> Mice <span class="count">(8)</span></label>
+            <label><input type="checkbox" class="category-filter" value="Headsets"> Headsets <span class="count">(8)</span></label>
+            <label><input type="checkbox" class="category-filter" value="Keyboards"> Keyboards <span class="count">(8)</span></label>
+            <label><input type="checkbox" class="category-filter" value="Mouse Pads"> Mouse Pads <span class="count">(6)</span></label>
+            <label><input type="checkbox" class="category-filter" value="Monitors"> Monitors <span class="count">(5)</span></label>
+            <label><input type="checkbox" class="category-filter" value="Webcams"> Webcams <span class="count">(5)</span></label>
+            <label><input type="checkbox" class="category-filter" value="Microphones"> Microphones <span class="count">(5)</span></label>
+            <label><input type="checkbox" class="category-filter" value="Accessories"> Accessories <span class="count">(2)</span></label>
+            <label><input type="checkbox" class="category-filter" value="Chairs"> Chairs <span class="count">(2)</span></label>
+            <label><input type="checkbox" class="category-filter" value="Controllers"> Controllers <span class="count">(1)</span></label>
+          </div>
+
+          <div class="sidebar-widget sidebar-brands">
+            <h3>Brands</h3>
+            <label><input type="checkbox" class="brand-filter" value="Razer"> Razer <span class="count">(16)</span></label>
+            <label><input type="checkbox" class="brand-filter" value="Logitech"> Logitech <span class="count">(14)</span></label>
+            <label><input type="checkbox" class="brand-filter" value="MSI"> MSI <span class="count">(6)</span></label>
+            <label><input type="checkbox" class="brand-filter" value="HyperX"> HyperX <span class="count">(6)</span></label>
+            <label><input type="checkbox" class="brand-filter" value="AOC"> AOC <span class="count">(3)</span></label>
+            <label><input type="checkbox" class="brand-filter" value="Corsair"> Corsair <span class="count">(2)</span></label>
+            <label><input type="checkbox" class="brand-filter" value="Intel"> Intel <span class="count">(2)</span></label>
+            <label><input type="checkbox" class="brand-filter" value="AMD"> AMD <span class="count">(2)</span></label>
+            <label><input type="checkbox" class="brand-filter" value="SteelSeries"> SteelSeries <span class="count">(1)</span></label>
+            <label><input type="checkbox" class="brand-filter" value="Cooler Master"> Cooler Master <span class="count">(1)</span></label>
+          </div>
+
+          <div class="sidebar-widget">
+            <h3>Price Range</h3>
+            <div class="price-slider">
+              <input type="range" id="price-max" min="0" max="20000" value="20000" step="100">
+            </div>
+            <div class="price-range">
+              <span>0 DH</span>
+              <span id="price-display">20,000 DH</span>
+            </div>
+          </div>
+
+          <button class="btn btn-secondary" style="width:100%" onclick="document.querySelectorAll('.category-filter,.brand-filter').forEach(cb=>cb.checked=false);document.getElementById('price-max').value=20000;document.getElementById('price-display').textContent='20,000 DH';document.getElementById('shop-search').value='';filterProducts()">
+            <span class="material-symbols-outlined">refresh</span> Reset Filters
+          </button>
+        </aside>
+
+        <div>
+          <div class="shop-controls">
+            <span class="results">Showing <strong id="results-count">62</strong> results</span>
+            <div style="display:flex;gap:15px;align-items:center;flex-wrap:wrap">
+              <select id="sort-by" class="sort-select">
+                <option value="default">Default Sort</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="rating">Highest Rated</option>
+                <option value="name">Name: A-Z</option>
+                <option value="newest">Newest</option>
+              </select>
+              <div class="view-toggle">
+                <button class="active" onclick="setView('grid')"><span class="material-symbols-outlined">grid_view</span></button>
+                <button onclick="setView('list')"><span class="material-symbols-outlined">view_list</span></button>
+              </div>
+            </div>
+          </div>
+          <div class="product-grid" id="shop-grid"></div>
+          <div class="pagination" id="pagination"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">Gaming <span>Castel</span></div>
+        <p>Your premium destination for gaming gear and accessories. We bring the best gaming technology from top brands directly to you.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook"><span class="material-symbols-outlined">globe</span></a>
+          <a href="#" aria-label="Instagram"><span class="material-symbols-outlined">photo_camera</span></a>
+          <a href="#" aria-label="Twitter"><span class="material-symbols-outlined">sms</span></a>
+          <a href="#" aria-label="YouTube"><span class="material-symbols-outlined">play_circle</span></a>
+          <a href="#" aria-label="Discord"><span class="material-symbols-outlined">forum</span></a>
+        </div>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <div class="footer-links">
+          <a href="shop.html">All Products</a>
+          <a href="shop.html?category=Keyboards">Keyboards</a>
+          <a href="shop.html?category=Mice">Mice</a>
+          <a href="shop.html?category=Headsets">Headsets</a>
+          <a href="shop.html?category=Monitors">Monitors</a>
+          <a href="shop.html?category=Chairs">Chairs</a>
+        </div>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <div class="footer-links">
+          <a href="contact.html">Contact Us</a>
+          <a href="#">Shipping Info</a>
+          <a href="#">Returns & Exchanges</a>
+          <a href="#">FAQ</a>
+          <a href="#">Size Guide</a>
+        </div>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <div class="footer-links">
+          <a href="about.html">About Us</a>
+          <a href="#">Careers</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Affiliate Program</a>
+        </div>
+      </div>
+      <div>
+        <h4>Newsletter</h4>
+        <p style="color:var(--text-secondary);font-size:0.9rem;line-height:1.7;margin-bottom:15px">Get 10% off your first order and exclusive gaming deals.</p>
+        <form onsubmit="event.preventDefault(); showToast('Subscribed!','success'); this.reset();" style="display:flex;gap:8px">
+          <input type="email" placeholder="Your email" style="flex:1;padding:12px;border-radius:8px;border:2px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);font-size:0.9rem" required>
+          <button type="submit" class="btn btn-primary btn-sm" style="padding:12px 16px"><span class="material-symbols-outlined">arrow_forward</span></button>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 Gaming Castel. All rights reserved.</p>
+      <div class="footer-payments">
+        <span>Visa</span>
+        <span>Mastercard</span>
+        <span>PayPal</span>
+        <span>Cash</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<input type="text" id="search-input" style="position:absolute;left:-9999px" autocomplete="off">
+<script src="assets/js/script.js"></script>
+<script>
+function setView(view) {
+  const grid = document.getElementById('shop-grid');
+  if (!grid) return;
+  if (view === 'grid') {
+    grid.style.gridTemplateColumns = '';
+    document.querySelectorAll('.view-toggle button')[0].classList.add('active');
+    document.querySelectorAll('.view-toggle button')[1].classList.remove('active');
+  } else {
+    grid.style.gridTemplateColumns = '1fr';
+    grid.querySelectorAll('.product-card').forEach(c => c.style.display = 'flex');
+    document.querySelectorAll('.view-toggle button')[1].classList.add('active');
+    document.querySelectorAll('.view-toggle button')[0].classList.remove('active');
+  }
+}
+</script>
+</body>
+</html>
