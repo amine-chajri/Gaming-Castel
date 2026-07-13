@@ -942,6 +942,11 @@ function initMegaMenu() {
   if (!trigger || !mega) return;
 
   trigger.addEventListener('mouseenter', () => mega.classList.add('active'));
+  trigger.addEventListener('mouseleave', (e) => {
+    if (!e.relatedTarget || !e.relatedTarget.closest('.mega-menu')) {
+      mega.classList.remove('active');
+    }
+  });
   const wrapper = document.querySelector('.navbar .container');
   if (wrapper) {
     wrapper.addEventListener('mouseleave', (e) => {

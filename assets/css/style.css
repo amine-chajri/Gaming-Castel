@@ -442,8 +442,7 @@ input, select, textarea {
   top: 100%;
   left: 0;
   width: 100%;
-  background: rgba(18, 18, 26, 0.98);
-  backdrop-filter: blur(20px);
+  background: #0a0a0f;
   border-bottom: 1px solid var(--border-color);
   opacity: 0;
   visibility: hidden;
@@ -456,6 +455,11 @@ input, select, textarea {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+}
+
+.mega-menu .container {
+  display: block;
+  height: auto;
 }
 
 .mega-menu-grid {
